@@ -1,4 +1,6 @@
 import flet as ft
+from flet_core import Dropdown
+
 
 class View(object):
     def __init__(self, page: ft.Page):
@@ -13,6 +15,7 @@ class View(object):
         self.__title = None
         self.__theme_switch = None
 
+
         # define the UI elements and populate the page
 
     def add_content(self):
@@ -26,9 +29,61 @@ class View(object):
                    alignment=ft.MainAxisAlignment.START)
         )
 
-        # Add your stuff here
+        self._linguaSelezionata= ft.Dropdown(width=200,
+                                             options=[
+                                                 ft.dropdown.Option("italian","Italiano"),ft.dropdown.Option("english"),ft.dropdown.Option("spanish"),
+                                             ],
+                                             label="Select language",
+                                             on_change=self.__controller.checkLanguage,
+                                             expand=True
+                                             )
+        row1 = ft.Row(controls=[self._linguaSelezionata],
+                      alignment=ft.MainAxisAlignment.START)
 
-        # self.page.add([])
+
+        self._ricercaSelezionata=ft.Dropdown(width=200,
+                                             options=[
+                                                 ft.dropdown.Option("Default"),ft.dropdown.Option("Linear"),ft.dropdown.Option("Dichotomic"),
+                                             ],
+                                             label= "Search Modality",
+                                             on_change=self.__controller.checkModality)
+
+        self._txtInFrase=ft.TextField(label="add your sentence here",
+                                      width=200,
+                                      expand=True,
+                                      )
+
+        self._btnCorrezione = ft.ElevatedButton(content=ft.Text("Spell check"),
+                                                on_click=self.__controller.handleSpellCheck,
+                                                width=200)
+
+
+
+
+        row2=ft.Row(controls=[self._ricercaSelezionata,self._txtInFrase,self._btnCorrezione])
+        self._lvOut = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+
+        row3 = ft.Row(
+            controls=[self._lvOut],
+            expand=True  # importante per farla espandere
+        )
+
+        self.page.add(row1, row2, row3)
+
+
+
+
+
+
+
+
+                          
+
+
+
+
+
+
 
         self.page.update()
 
